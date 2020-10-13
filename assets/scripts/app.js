@@ -2,7 +2,6 @@ const ATTACK_VALUE = 10;
 const STRONG_ATTACK_VALUE = 17;
 const MONSTER_ATTACK_VALUE = 14;
 const HEAL_VALUE = 20;
-const enteredValue = prompt('Maximum life for you and the monster.', '100');
 
 const MODE_ATTACK = 'ATTACK';
 const MODE_STRONG_ATTACK = 'STRONG_ATTACK';
@@ -12,12 +11,25 @@ const LOG_EVENT_MONSTER_ATTACK = 'MONSTER_ATTACK';
 const LOG_EVENT_PLAYER_HEAL = 'PLAYER_HEAL';
 const LOG_EVENT_GAME_OVER = 'GAME_OVER';
 
-let chosenMaxLife = parseInt(enteredValue);
 let battleLog = [];
 let lastLoggedEntry;
+let chosenMaxLife;
 
-if(isNaN(chosenMaxLife) || chosenMaxLife <= 0) {
+function getMaxLifeValues() {
+    const enteredValue = prompt('Maximum life for you and the monster.', '100');
+
+    const parsedValue = parseInt(enteredValue);
+    if(isNaN(parsedValue) || parsedValue <= 0) {
+      throw {message: 'Invalid User input, not a number. Setting default health to 100'};  
+    }
+    return parsedValue
+}
+
+try {
+    chosenMaxLife = getMaxLifeValues();
+} catch (error) {
     chosenMaxLife = 100;
+    alert(error.message);
 }
 
 let currentMonsterHealth = chosenMaxLife;
